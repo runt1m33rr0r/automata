@@ -1,14 +1,15 @@
 #include <iostream>
+#include <exception>
 
-#include "String.h"
+#include "State.h"
+#include "SmartArray.h"
 
 using namespace std;
 
 int main()
 {
-	String test;
-	cin >> test;
-	cout << test << endl;
+	State test("test");
+	cout << test.getName() << endl;
 
 	return 0;
 }

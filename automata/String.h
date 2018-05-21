@@ -9,8 +9,8 @@ class String
 private:
 	char * value;
 
-	void delete_value();
-	void set_value(const char * value);
+	void deleteValue();
+	void setValue(const char * value);
 public:
 	String();
 	String(const char * value);
@@ -19,8 +19,8 @@ public:
 
 	String & operator=(const String & other);
 
-	void export_data_to(std::ostream & out) const;
-	void insert_data_from(std::istream & in);
+	void exportDataTo(std::ostream & out) const;
+	void insertDataFrom(std::istream & in);
 };
 
 std::ostream & operator<<(std::ostream & out, const String & other);
