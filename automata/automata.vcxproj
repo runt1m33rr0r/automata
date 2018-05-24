@@ -123,6 +123,7 @@
     <ClCompile Include="String.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DeterminateFiniteAutomatonInt.h" />
     <ClInclude Include="SmartArray.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="String.h" />

@@ -35,5 +35,8 @@
     <ClInclude Include="SmartArray.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DeterminateFiniteAutomatonInt.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
