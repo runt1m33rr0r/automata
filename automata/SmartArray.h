@@ -8,6 +8,8 @@ private:
 
 	void setElements(const T * elements, size_t count);
 	void deleteElements();
+
+	void checkIndex(size_t idx) const;
 public:
 	SmartArray();
 	SmartArray(const T * elems, size_t count);
@@ -16,6 +18,7 @@ public:
 
 	SmartArray<T> & operator=(const SmartArray & other);
 	T & operator[](size_t idx);
+	const T & operator[](size_t idx) const;
 
 	size_t getCount() const;
 
@@ -42,6 +45,15 @@ void SmartArray<T>::deleteElements()
 		delete[] this->elements;
 	}
 	this->count = 0;
+}
+
+template<class T>
+inline void SmartArray<T>::checkIndex(size_t idx) const
+{
+	if (idx < this->count - 1 || idx > this->count - 1)
+	{
+		throw std::runtime_error("Index out of range!");
+	}
 }
 
 template<class T>
@@ -81,11 +93,14 @@ SmartArray<T> & SmartArray<T>::operator=(const SmartArray & other)
 template<class T>
 T & SmartArray<T>::operator[](size_t idx)
 {
-	if (idx < this->count - 1 || idx > this->count - 1)
-	{
-		throw std::runtime_error("Index out of range!");
-	}
+	this->checkIndex(idx);
+	return this->elements[idx];
+}
 
+template<class T>
+inline const T & SmartArray<T>::operator[](size_t idx) const
+{
+	this->checkIndex(idx);
 	return this->elements[idx];
 }
 

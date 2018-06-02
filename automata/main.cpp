@@ -7,7 +7,7 @@ using namespace std;
 
 int main()
 {
-	State test("test");
+	State test("test", false, false);
 	cout << test.getName() << endl;
 
 	DeterminateFiniteAutomatonInt automaton;

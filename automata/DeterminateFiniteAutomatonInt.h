@@ -8,6 +8,8 @@ class DeterminateFiniteAutomatonInt
 private:
 	SmartArray<String> alphabet;
 	SmartArray<State> states;
-	State startState;
-	SmartArray<State> finalStates;
+public:
+	size_t getIndexOfStarting() const;
+
+	void setStartingAt(size_t idx);
 };
