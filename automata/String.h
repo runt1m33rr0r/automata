@@ -18,6 +18,7 @@ public:
 	virtual ~String();
 
 	String & operator=(const String & other);
+	bool operator==(const String & other) const;
 
 	void exportDataTo(std::ostream & out) const;
 	void insertDataFrom(std::istream & in);

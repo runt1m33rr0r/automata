@@ -9,7 +9,7 @@ State::State(const String & name, bool isFinal, bool isStarting) :
 {
 }
 
-String State::getName() const
+const String & State::getName() const
 {
 	return this->name;
 }
@@ -27,4 +27,9 @@ bool State::getStarting() const
 void State::setStarting(bool isStarting)
 {
 	this->isStarting = isStarting;
+}
+
+void State::setFinal(bool isFinal)
+{
+	this->isFinal = isFinal;
 }

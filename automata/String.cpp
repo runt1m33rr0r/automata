@@ -48,6 +48,16 @@ String & String::operator=(const String & other)
 	return *this;
 }
 
+bool String::operator==(const String & other) const
+{
+	if (this == &other || this->value == other.value)
+	{
+		return true;
+	}
+
+	return false;
+}
+
 void String::exportDataTo(std::ostream & out) const
 {
 	out << this->value;

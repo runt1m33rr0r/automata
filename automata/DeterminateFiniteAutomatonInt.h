@@ -6,10 +6,17 @@
 class DeterminateFiniteAutomatonInt
 {
 private:
-	SmartArray<String> alphabet;
+	SmartArray<int> alphabet;
 	SmartArray<State> states;
-public:
-	size_t getIndexOfStarting() const;
 
-	void setStartingAt(size_t idx);
+	State & getStateByName(const String & name);
+public:
+	DeterminateFiniteAutomatonInt();
+	DeterminateFiniteAutomatonInt(const SmartArray<int> & alphabet);
+
+	const State & getStarting() const;
+
+	void setStarting(String name);
+	void unsetStarting();
+	void setFinal(String name);
 };

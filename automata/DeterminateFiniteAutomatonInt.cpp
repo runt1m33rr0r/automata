@@ -1,25 +1,57 @@
 #include "DeterminateFiniteAutomatonInt.h"
 
-size_t DeterminateFiniteAutomatonInt::getIndexOfStarting() const
+DeterminateFiniteAutomatonInt::DeterminateFiniteAutomatonInt()
+{
+}
+
+DeterminateFiniteAutomatonInt::DeterminateFiniteAutomatonInt(const SmartArray<int>& alphabet)
+	: alphabet(alphabet)
+{
+}
+
+State & DeterminateFiniteAutomatonInt::getStateByName(const String & name)
+{
+	for (size_t i = 0; i < this->states.getCount(); i++)
+	{
+		if (this->states[i].getName() == name)
+		{
+			return this->states[i];
+		}
+	}
+
+	throw std::exception("State does not exist!");
+}
+
+const State & DeterminateFiniteAutomatonInt::getStarting() const
 {
 	for (size_t i = 0; i < this->states.getCount(); i++)
 	{
 		if (this->states[i].getStarting())
 		{
-			return i;
+			return this->states[i];
 		}
 	}
 
-	return -1;
+	throw std::exception("State does not exist!");
 }
 
-void DeterminateFiniteAutomatonInt::setStartingAt(size_t idx)
+void DeterminateFiniteAutomatonInt::setStarting(String name)
 {
-	size_t oldStarting = this->getIndexOfStarting();
-	if (oldStarting > -1)
+	if (this->getStarting().getStarting())
 	{
-		this->states[oldStarting].setStarting(false);
+		throw std::exception("Automaton already has starting state!");
 	}
 
-	this->states[idx].setStarting(true);
+	this->getStateByName(name).setStarting(true);
+}
+
+void DeterminateFiniteAutomatonInt::unsetStarting()
+{
+	String startingName = this->getStarting().getName();
+	this->getStateByName(startingName).setStarting(false);
+}
+
+void DeterminateFiniteAutomatonInt::setFinal(String name)
+{
+	this->getStateByName(name).setFinal(true);
 }
