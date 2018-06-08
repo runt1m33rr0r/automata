@@ -10,7 +10,7 @@ private:
 	bool isStarting;
 public:
 	State();
-	State(const String & name, bool isFinal, bool isStarting);
+	State(const String & name, bool isFinal = false, bool isStarting = false);
 
 	const String & getName() const;
 	bool getFinal() const;

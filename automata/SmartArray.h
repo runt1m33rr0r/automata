@@ -29,8 +29,9 @@ template<class T>
 void SmartArray<T>::setElements(const T * elements, size_t count)
 {
 	this->deleteElements();
-
+	
 	this->count = count;
+	this->elements = new T[count];
 	for (size_t i = 0; i < count; i++)
 	{
 		this->elements[i] = elements[i];
@@ -50,7 +51,7 @@ void SmartArray<T>::deleteElements()
 template<class T>
 inline void SmartArray<T>::checkIndex(size_t idx) const
 {
-	if (idx < this->count - 1 || idx > this->count - 1)
+	if (this->count == 0 || idx + 1 > this->count)
 	{
 		throw std::runtime_error("Index out of range!");
 	}

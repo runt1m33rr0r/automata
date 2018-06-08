@@ -1,6 +1,6 @@
 #include "State.h"
 
-State::State() : name(""), isFinal(false), isStarting(false)
+State::State() : name("none"), isFinal(false), isStarting(false)
 {
 }
 
