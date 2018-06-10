@@ -4,7 +4,7 @@ State::State() : name("none"), isFinal(false), isStarting(false)
 {
 }
 
-State::State(const String & name, bool isFinal, bool isStarting) : 
+State::State(const String & name, bool isStarting, bool isFinal) :
 	name(name), isFinal(isFinal), isStarting(isStarting)
 {
 }

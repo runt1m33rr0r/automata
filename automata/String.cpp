@@ -58,6 +58,22 @@ bool String::operator==(const String & other) const
 	return false;
 }
 
+String String::operator+(const String & other) const
+{
+	unsigned thisLen = strlen(this->value);
+	unsigned otherLen = strlen(other.value);
+	unsigned newLen = thisLen + otherLen + 1;
+	char * buffer = new char[newLen];
+
+	strcpy_s(buffer, newLen, this->value);
+	strcat_s(buffer, newLen, other.value);
+
+	String newString(buffer);
+	delete[] buffer;
+
+	return newString;
+}
+
 void String::exportDataTo(std::ostream & out) const
 {
 	out << this->value;

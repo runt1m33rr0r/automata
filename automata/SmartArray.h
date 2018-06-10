@@ -21,6 +21,7 @@ public:
 	const T & operator[](size_t idx) const;
 
 	size_t getCount() const;
+	size_t indexOf(const T & obj) const;
 
 	void add(const T element);
 };
@@ -109,6 +110,20 @@ template<class T>
 size_t SmartArray<T>::getCount() const
 {
 	return this->count;
+}
+
+template<class T>
+inline size_t SmartArray<T>::indexOf(const T & obj) const
+{
+	/*for (size_t i = 0; i < this->count; i++)
+	{
+		if (this->elements[i] == obj)
+		{
+			return i;
+		}
+	}*/
+
+	return -1;
 }
 
 template<class T>
