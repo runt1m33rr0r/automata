@@ -181,3 +181,8 @@ DeterminateFiniteAutomatonInt DeterminateFiniteAutomatonInt::operator|(
 {
 	return DeterminateFiniteAutomatonInt::mergeAutomata(*this, other, MergeMode::Union);
 }
+
+DeterminateFiniteAutomatonInt DeterminateFiniteAutomatonInt::operator&(const DeterminateFiniteAutomatonInt & other) const
+{
+	return DeterminateFiniteAutomatonInt::mergeAutomata(*this, other, MergeMode::Intersection);
+}
