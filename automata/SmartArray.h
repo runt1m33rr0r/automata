@@ -115,13 +115,13 @@ size_t SmartArray<T>::getCount() const
 template<class T>
 inline size_t SmartArray<T>::indexOf(const T & obj) const
 {
-	/*for (size_t i = 0; i < this->count; i++)
+	for (size_t i = 0; i < this->count; i++)
 	{
 		if (this->elements[i] == obj)
 		{
 			return i;
 		}
-	}*/
+	}
 
 	return -1;
 }

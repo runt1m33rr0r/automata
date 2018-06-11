@@ -39,3 +39,18 @@ void State::setFinal(bool isFinal)
 {
 	this->isFinal = isFinal;
 }
+
+bool State::operator==(const State & other) const
+{
+	if (this == &other)
+	{
+		return true;
+	}
+	
+	if (this->name == other.name)
+	{
+		return true;
+	}
+
+	return false;
+}

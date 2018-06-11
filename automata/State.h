@@ -26,4 +26,6 @@ public:
 
 	void setStarting(bool isStarting);
 	void setFinal(bool isFinal);
+
+	bool operator==(const State & other) const;
 };
