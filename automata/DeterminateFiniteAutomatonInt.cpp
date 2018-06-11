@@ -78,6 +78,48 @@ State DeterminateFiniteAutomatonInt::mergeStates(const State & first, const Stat
 	return State(newStateName, isStarting, isFinal, composite);
 }
 
+DeterminateFiniteAutomatonInt DeterminateFiniteAutomatonInt::mergeAutomata(
+	const DeterminateFiniteAutomatonInt & first,
+	const DeterminateFiniteAutomatonInt & second,
+	MergeMode mode)
+{
+	DeterminateFiniteAutomatonInt newAutomaton(first.alphabet);
+	State mergedState = DeterminateFiniteAutomatonInt::mergeStates(
+		first.getStartingState(),
+		second.getStartingState(), MergeMode::Union);
+
+	SmartArray<State> mergedFirstRow = DeterminateFiniteAutomatonInt::mergeRows(
+		first.transitionTable[0],
+		second.transitionTable[0],
+		MergeMode::Union);
+	newAutomaton.states.add(mergedState);
+	newAutomaton.transitionTable.add(mergedFirstRow);
+
+	size_t danglingStateIdx;
+	State danglingState;
+	size_t firstRowIdx;
+	size_t secondRowIdx;
+	SmartArray<State> firstRow;
+	SmartArray<State> secondRow;
+	SmartArray<State> mergedRow;
+
+	do
+	{
+		danglingStateIdx = newAutomaton.findDanglingStateIdx();
+		danglingState = newAutomaton.states[danglingStateIdx];
+
+		firstRowIdx = first.states.indexOf(danglingState.getCompositeStates()[0]);
+		secondRowIdx = second.states.indexOf(danglingState.getCompositeStates()[1]);
+		firstRow = first.transitionTable[firstRowIdx];
+		secondRow = second.transitionTable[secondRowIdx];
+
+		mergedRow = DeterminateFiniteAutomatonInt::mergeRows(firstRow, secondRow, MergeMode::Union);
+		newAutomaton.transitionTable.add(mergedRow);
+	} while (danglingStateIdx >= 0);
+
+	return newAutomaton;
+}
+
 const State & DeterminateFiniteAutomatonInt::getStartingState() const
 {
 	for (size_t i = 0; i < this->states.getCount(); i++)
@@ -115,35 +157,5 @@ void DeterminateFiniteAutomatonInt::setFinalState(String name)
 DeterminateFiniteAutomatonInt DeterminateFiniteAutomatonInt::operator|(
 	const DeterminateFiniteAutomatonInt & other) const
 {
-	DeterminateFiniteAutomatonInt newAutomaton(this->alphabet);
-	State mergedState = DeterminateFiniteAutomatonInt::mergeStates(
-		this->getStartingState(),
-		other.getStartingState(), MergeMode::Union);
-	newAutomaton.states.add(mergedState);
-	newAutomaton.transitionTable.add(
-		this->mergeRows(this->transitionTable[0], other.transitionTable[0], MergeMode::Union));
-		 
-	size_t danglingStateIdx;
-	State danglingState;
-	size_t firstRowIdx;
-	size_t secondRowIdx;
-	SmartArray<State> firstRow;
-	SmartArray<State> secondRow;
-	SmartArray<State> mergedRow;
-
-	do
-	{
-		danglingStateIdx = newAutomaton.findDanglingStateIdx();
-		danglingState = newAutomaton.states[danglingStateIdx];
-		
-		firstRowIdx = this->states.indexOf(danglingState.getCompositeStates()[0]);
-		secondRowIdx = other.states.indexOf(danglingState.getCompositeStates()[1]);
-		firstRow = this->transitionTable[firstRowIdx];
-		secondRow = other.transitionTable[secondRowIdx];
-
-		mergedRow = DeterminateFiniteAutomatonInt::mergeRows(firstRow, secondRow, MergeMode::Union);
-		newAutomaton.transitionTable.add(mergedRow);
-	} while (danglingStateIdx >= 0);
-
-	return newAutomaton;
+	return DeterminateFiniteAutomatonInt::mergeAutomata(*this, other, MergeMode::Union);
 }

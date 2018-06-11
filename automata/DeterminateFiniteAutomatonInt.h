@@ -22,6 +22,10 @@ private:
 		const SmartArray<State> & secondRow,
 		MergeMode mode);
 	static State mergeStates(const State & first, const State & second, MergeMode mode);
+	static DeterminateFiniteAutomatonInt mergeAutomata(
+		const DeterminateFiniteAutomatonInt & first, 
+		const DeterminateFiniteAutomatonInt & second,
+		MergeMode mode);
 public:
 	DeterminateFiniteAutomatonInt();
 	DeterminateFiniteAutomatonInt(const SmartArray<int> & alphabet);
