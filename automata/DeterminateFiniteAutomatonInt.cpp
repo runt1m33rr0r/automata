@@ -182,7 +182,42 @@ DeterminateFiniteAutomatonInt DeterminateFiniteAutomatonInt::operator|(
 	return DeterminateFiniteAutomatonInt::mergeAutomata(*this, other, MergeMode::Union);
 }
 
-DeterminateFiniteAutomatonInt DeterminateFiniteAutomatonInt::operator&(const DeterminateFiniteAutomatonInt & other) const
+DeterminateFiniteAutomatonInt DeterminateFiniteAutomatonInt::operator&(
+	const DeterminateFiniteAutomatonInt & other) const
 {
 	return DeterminateFiniteAutomatonInt::mergeAutomata(*this, other, MergeMode::Intersection);
+}
+
+DeterminateFiniteAutomatonInt DeterminateFiniteAutomatonInt::operator^(
+	const DeterminateFiniteAutomatonInt & other) const
+{
+	DeterminateFiniteAutomatonInt newAutomaton(other);
+	for (size_t i = 0; i < newAutomaton.states.getCount(); i++)
+	{
+		if (newAutomaton.states[i].getFinal())
+		{
+			newAutomaton.states[i].setFinal(false);
+		}
+		else
+		{
+			newAutomaton.states[i].setFinal(true);
+		}
+	}
+
+	for (size_t row = 0; row < newAutomaton.transitionTable.getCount(); row++)
+	{
+		for (size_t col = 0; col < newAutomaton.alphabet.getCount(); col++)
+		{
+			if (newAutomaton.transitionTable[row][col].getFinal())
+			{
+				newAutomaton.transitionTable[row][col].setFinal(false);
+			}
+			else
+			{
+				newAutomaton.transitionTable[row][col].setFinal(true);
+			}
+		}
+	}
+
+	return newAutomaton;
 }

@@ -40,4 +40,5 @@ public:
 
 	DeterminateFiniteAutomatonInt operator|(const DeterminateFiniteAutomatonInt & other) const;
 	DeterminateFiniteAutomatonInt operator&(const DeterminateFiniteAutomatonInt & other) const;
+	DeterminateFiniteAutomatonInt operator^(const DeterminateFiniteAutomatonInt & other) const;
 };
