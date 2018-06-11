@@ -10,7 +10,7 @@ typedef SmartArray<SmartArray<State>> TransitionTable;
 class DeterminateFiniteAutomatonInt
 {
 private:
-	SmartArray<int> alphabet;
+	SmartArray<char> alphabet;
 	SmartArray<State> states;
 	TransitionTable transitionTable;
 
@@ -28,7 +28,7 @@ private:
 		MergeMode mode);
 public:
 	DeterminateFiniteAutomatonInt();
-	DeterminateFiniteAutomatonInt(const SmartArray<int> & alphabet);
+	DeterminateFiniteAutomatonInt(const SmartArray<char> & alphabet);
 
 	const State & getStartingState() const;
 

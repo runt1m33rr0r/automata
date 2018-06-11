@@ -4,7 +4,7 @@ DeterminateFiniteAutomatonInt::DeterminateFiniteAutomatonInt()
 {
 }
 
-DeterminateFiniteAutomatonInt::DeterminateFiniteAutomatonInt(const SmartArray<int>& alphabet)
+DeterminateFiniteAutomatonInt::DeterminateFiniteAutomatonInt(const SmartArray<char>& alphabet)
 	: alphabet(alphabet)
 {
 }
@@ -156,9 +156,21 @@ void DeterminateFiniteAutomatonInt::setFinalState(String name)
 
 bool DeterminateFiniteAutomatonInt::doesRecognizeWord(const String & word) const
 {
+	State currentState = this->getStartingState();
+	size_t currentStateIdx = 0;
+
 	for (size_t letterIdx = 0; letterIdx < word.getLen(); letterIdx++)
 	{
 		char currentLetter = word[letterIdx];
+		size_t letterInAlphabetIdx = this->alphabet.indexOf(currentLetter);
+		currentStateIdx = this->states.indexOf(currentState);
+
+		currentState = this->transitionTable[letterInAlphabetIdx][currentStateIdx];
+	}
+
+	if (currentState.getFinal())
+	{
+		return true;
 	}
 
 	return false;
