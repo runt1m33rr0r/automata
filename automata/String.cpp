@@ -1,4 +1,5 @@
 #include "String.h"
+#include "SmartArray.h"
 
 void String::deleteValue()
 {

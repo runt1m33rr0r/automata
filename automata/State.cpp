@@ -1,11 +1,12 @@
 #include "State.h"
+#include "String.h"
 
 State::State() : name("none"), isFinal(false), isStarting(false)
 {
 }
 
-State::State(const String & name, bool isStarting, bool isFinal) :
-	name(name), isFinal(isFinal), isStarting(isStarting)
+State::State(const String & name, bool isStarting, bool isFinal, const SmartArray<State> & compositeStates) :
+	name(name), isFinal(isFinal), isStarting(isStarting), compositeStates(compositeStates)
 {
 }
 
@@ -22,6 +23,11 @@ bool State::getFinal() const
 bool State::getStarting() const
 {
 	return this->isStarting;
+}
+
+SmartArray<State> State::getCompositeStates() const
+{
+	return this->compositeStates;
 }
 
 void State::setStarting(bool isStarting)
