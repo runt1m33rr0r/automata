@@ -86,12 +86,12 @@ DeterminateFiniteAutomatonInt DeterminateFiniteAutomatonInt::mergeAutomata(
 	DeterminateFiniteAutomatonInt newAutomaton(first.alphabet);
 	State mergedState = DeterminateFiniteAutomatonInt::mergeStates(
 		first.getStartingState(),
-		second.getStartingState(), MergeMode::Union);
+		second.getStartingState(), mode);
 
 	SmartArray<State> mergedFirstRow = DeterminateFiniteAutomatonInt::mergeRows(
 		first.transitionTable[0],
 		second.transitionTable[0],
-		MergeMode::Union);
+		mode);
 	newAutomaton.states.add(mergedState);
 	newAutomaton.transitionTable.add(mergedFirstRow);
 
@@ -113,7 +113,7 @@ DeterminateFiniteAutomatonInt DeterminateFiniteAutomatonInt::mergeAutomata(
 		firstRow = first.transitionTable[firstRowIdx];
 		secondRow = second.transitionTable[secondRowIdx];
 
-		mergedRow = DeterminateFiniteAutomatonInt::mergeRows(firstRow, secondRow, MergeMode::Union);
+		mergedRow = DeterminateFiniteAutomatonInt::mergeRows(firstRow, secondRow, mode);
 		newAutomaton.transitionTable.add(mergedRow);
 	} while (danglingStateIdx >= 0);
 
