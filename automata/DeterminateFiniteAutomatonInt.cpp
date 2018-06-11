@@ -154,6 +154,16 @@ void DeterminateFiniteAutomatonInt::setFinalState(String name)
 	this->getStateByName(name).setFinal(true);
 }
 
+bool DeterminateFiniteAutomatonInt::doesRecognizeWord(const String & word) const
+{
+	for (size_t letterIdx = 0; letterIdx < word.getLen(); letterIdx++)
+	{
+		char currentLetter = word[letterIdx];
+	}
+
+	return false;
+}
+
 DeterminateFiniteAutomatonInt DeterminateFiniteAutomatonInt::operator|(
 	const DeterminateFiniteAutomatonInt & other) const
 {

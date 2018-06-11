@@ -11,6 +11,7 @@ private:
 
 	void deleteValue();
 	void setValue(const char * value);
+	void checkIndex(size_t idx) const;
 public:
 	String();
 	String(const char * value);
@@ -20,9 +21,13 @@ public:
 	String & operator=(const String & other);
 	bool operator==(const String & other) const;
 	String operator+(const String & other) const;
+	char & operator[](size_t idx);
+	const char & operator[](size_t idx) const;
 
 	void exportDataTo(std::ostream & out) const;
 	void insertDataFrom(std::istream & in);
+
+	size_t getLen() const;
 };
 
 std::ostream & operator<<(std::ostream & out, const String & other);

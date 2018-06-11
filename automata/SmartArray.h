@@ -8,7 +8,6 @@ private:
 
 	void setElements(const T * elements, size_t count);
 	void deleteElements();
-
 	void checkIndex(size_t idx) const;
 public:
 	SmartArray();

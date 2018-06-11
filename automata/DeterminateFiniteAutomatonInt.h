@@ -36,5 +36,7 @@ public:
 	void unsetStartingState();
 	void setFinalState(String name);
 
+	bool doesRecognizeWord(const String & word) const;
+
 	DeterminateFiniteAutomatonInt operator|(const DeterminateFiniteAutomatonInt & other) const;
 };

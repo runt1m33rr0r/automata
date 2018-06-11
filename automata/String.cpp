@@ -19,6 +19,14 @@ void String::setValue(const char * value)
 	strcpy_s(this->value, len, value);
 }
 
+void String::checkIndex(size_t idx) const
+{
+	if (this->getLen() == 0 || idx + 1 > this->getLen())
+	{
+		throw std::runtime_error("Index out of range!");
+	}
+}
+
 String::String() : value(nullptr)
 {
 	this->setValue("");
@@ -75,6 +83,18 @@ String String::operator+(const String & other) const
 	return newString;
 }
 
+char & String::operator[](size_t idx)
+{
+	this->checkIndex(idx);
+	return this->value[idx];
+}
+
+const char & String::operator[](size_t idx) const
+{
+	this->checkIndex(idx);
+	return this->value[idx];
+}
+
 void String::exportDataTo(std::ostream & out) const
 {
 	out << this->value;
@@ -86,6 +106,11 @@ void String::insertDataFrom(std::istream & in)
 	in >> buffer;
 
 	this->setValue(buffer);
+}
+
+size_t String::getLen() const
+{
+	return strlen(this->value);
 }
 
 std::ostream & operator<<(std::ostream & out, const String & other)
