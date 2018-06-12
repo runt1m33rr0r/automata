@@ -49,8 +49,8 @@ int main()
 	DeterminateFiniteAutomatonInt second(alphabet, secondStates, secondTransitions);
 	cout << second;
 
-	DeterminateFiniteAutomatonInt result = first | second;
-	cout << result;
+	ofstream out("test.txt");
+	out << first;
 
 	return 0;
 }

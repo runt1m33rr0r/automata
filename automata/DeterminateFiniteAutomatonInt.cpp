@@ -40,6 +40,20 @@ const State * DeterminateFiniteAutomatonInt::findDanglingState() const
 	return nullptr;
 }
 
+SmartArray<State> DeterminateFiniteAutomatonInt::getFinalStates() const
+{
+	SmartArray<State> finalStates;
+	for (size_t stateIdx = 0; stateIdx < this->states.getCount(); stateIdx++)
+	{
+		if (this->states[stateIdx].getFinal())
+		{
+			finalStates.add(this->states[stateIdx]);
+		}
+	}
+
+	return finalStates;
+}
+
 SmartArray<State> DeterminateFiniteAutomatonInt::mergeRows(
 	const SmartArray<State>& firstRow, 
 	const SmartArray<State>& secondRow,
@@ -223,7 +237,7 @@ DeterminateFiniteAutomatonInt DeterminateFiniteAutomatonInt::operator^(
 	return newAutomaton;
 }
 
-std::ostream & DeterminateFiniteAutomatonInt::insertDataIn(std::ostream & out) const
+std::ostream & DeterminateFiniteAutomatonInt::insertDataInStream(std::ostream & out) const
 {
 	out << "  ";
 	for (size_t i = 0; i < this->alphabet.getCount(); i++)
@@ -237,6 +251,8 @@ std::ostream & DeterminateFiniteAutomatonInt::insertDataIn(std::ostream & out) c
 		out << states[i].getName() << " ";
 		for (size_t j = 0; j < this->alphabet.getCount(); j++)
 		{
+			out << (transitionTable[i][j].getStarting() ? "s" : "");
+			out << (transitionTable[i][j].getFinal() ? "f" : "");
 			out << transitionTable[i][j].getName() << " ";
 		}
 		out << std::endl;
@@ -245,7 +261,7 @@ std::ostream & DeterminateFiniteAutomatonInt::insertDataIn(std::ostream & out) c
 	return out;
 }
 
-std::istream & DeterminateFiniteAutomatonInt::extractDataFrom(std::istream & in)
+std::istream & DeterminateFiniteAutomatonInt::extractDataFromStream(std::istream & in)
 {
 	unsigned statesCount = 0;
 	std::cout << "number of states: ";
@@ -291,12 +307,71 @@ std::istream & DeterminateFiniteAutomatonInt::extractDataFrom(std::istream & in)
 	return in;
 }
 
+std::ofstream & DeterminateFiniteAutomatonInt::insertDataInFile(std::ofstream & out) const
+{
+	out << "1" << std::endl;
+
+	// print states
+	out << this->states.getCount() << " ";
+	for (size_t stateIdx = 0; stateIdx < this->states.getCount(); stateIdx++)
+	{
+		out << this->states[stateIdx].getName() << " ";
+	}
+	out << std::endl;
+
+	// print alphabet
+	out << this->alphabet.getCount() << " ";
+	for (size_t symbolIdx = 0; symbolIdx < this->alphabet.getCount(); symbolIdx++)
+	{
+		out << this->alphabet[symbolIdx] << " ";
+	}
+	out << std::endl;
+
+	// print transition table
+	for (size_t row = 0; row < this->transitionTable.getCount(); row++)
+	{
+		for (size_t col = 0; col < this->transitionTable[0].getCount(); col++)
+		{
+			out << this->transitionTable[row][col].getName() << " ";
+		}
+		out << std::endl;
+	}
+
+	// print starting state
+	out << this->getStartingState().getName() << std::endl;
+
+	// print final states
+	SmartArray<State> finalStates = this->getFinalStates();
+	out << finalStates.getCount() << " ";
+	for (size_t stateIdx = 0; stateIdx < finalStates.getCount(); stateIdx++)
+	{
+		out << finalStates[stateIdx].getName() << " ";
+	}
+
+	return out;
+}
+
+std::ifstream & DeterminateFiniteAutomatonInt::extractDataFromFile(std::ifstream & in)
+{
+	return in;
+}
+
 std::ostream & operator<<(std::ostream & out, const DeterminateFiniteAutomatonInt & obj)
 {
-	return obj.insertDataIn(out);
+	return obj.insertDataInStream(out);
 }
 
 std::istream & operator>>(std::istream & in, DeterminateFiniteAutomatonInt & obj)
 {
-	return obj.extractDataFrom(in);
+	return obj.extractDataFromStream(in);
+}
+
+std::ofstream & operator<<(std::ofstream & out, const DeterminateFiniteAutomatonInt & obj)
+{
+	return obj.insertDataInFile(out);
+}
+
+std::ifstream & operator>>(std::ifstream & in, DeterminateFiniteAutomatonInt & obj)
+{
+	return obj.extractDataFromFile(in);
 }

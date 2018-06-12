@@ -1,5 +1,7 @@
 #pragma once
 
+#include <fstream>
+
 #include "SmartArray.h"
 #include "State.h"
 
@@ -16,6 +18,7 @@ private:
 
 	State & getStateByName(const String & name);
 	const State * findDanglingState() const;
+	SmartArray<State> getFinalStates() const;
 
 	static SmartArray<State> mergeRows(
 		const SmartArray<State> & firstRow,
@@ -45,9 +48,14 @@ public:
 	DeterminateFiniteAutomatonInt operator&(const DeterminateFiniteAutomatonInt & other) const;
 	DeterminateFiniteAutomatonInt operator^(const DeterminateFiniteAutomatonInt & other) const;
 
-	std::ostream & insertDataIn(std::ostream & out) const;
-	std::istream & extractDataFrom(std::istream & in);
+	std::ostream & insertDataInStream(std::ostream & out) const;
+	std::istream & extractDataFromStream(std::istream & in);
+	std::ofstream & insertDataInFile(std::ofstream & out) const;
+	std::ifstream & extractDataFromFile(std::ifstream & in);
 };
 
 std::ostream & operator<<(std::ostream & out, const DeterminateFiniteAutomatonInt & obj);
 std::istream & operator>>(std::istream & in, DeterminateFiniteAutomatonInt & obj);
+
+std::ofstream & operator<<(std::ofstream & out, const DeterminateFiniteAutomatonInt & obj);
+std::ifstream & operator>>(std::ifstream & in, DeterminateFiniteAutomatonInt & obj);
