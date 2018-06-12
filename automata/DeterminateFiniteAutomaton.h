@@ -5,6 +5,7 @@
 
 #include "SmartArray.h"
 #include "State.h"
+#include "AutomatonException.h"
 
 enum MergeMode { Union, Intersection };
 
@@ -178,7 +179,7 @@ public:
 	{
 		if (this->getStartingState().getStarting())
 		{
-			throw std::exception("Automaton already has starting state!");
+			throw AutomatonException(name, this->getStartingState().getName());
 		}
 
 		this->getStateByName(name).setStarting(true);
@@ -386,6 +387,7 @@ public:
 
 		// read starting state
 		in >> currentStateName;
+		this->setStartingState(currentStateName);
 		this->getStateByName(currentStateName).setStarting(true);
 		for (size_t i = 0; i < this->transitionTable.getCount(); i++)
 		{

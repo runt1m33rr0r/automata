@@ -24,6 +24,9 @@
     <ClCompile Include="State.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AutomatonException.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="String.h">
@@ -36,6 +39,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DeterminateFiniteAutomaton.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AutomatonException.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -118,11 +118,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AutomatonException.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="String.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AutomatonException.h" />
     <ClInclude Include="DeterminateFiniteAutomaton.h" />
     <ClInclude Include="SmartArray.h" />
     <ClInclude Include="State.h" />
