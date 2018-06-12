@@ -2,6 +2,7 @@
 #include <exception>
 
 #include "DeterminateFiniteAutomatonInt.h"
+#include "DeterminateFiniteAutomatonChar.h"
 
 using namespace std;
 
@@ -23,7 +24,7 @@ int main()
 	firstTransitions[1].add(State("q0", true));
 	firstTransitions[1].add(State("q1", false, true));
 
-	DeterminateFiniteAutomatonInt first(alphabet, firstStates, firstTransitions);
+	DeterminateFiniteAutomatonChar first(alphabet, firstStates, firstTransitions);
 
 	/*SmartArray<State> secondStates;
 	secondStates.add(State("q0", true));
@@ -54,6 +55,8 @@ int main()
 	out.close();
 
 	ifstream in("test.txt");
+	unsigned alphabetType = 1;
+	in >> alphabetType;
 	in >> first;
 	in.close();
 

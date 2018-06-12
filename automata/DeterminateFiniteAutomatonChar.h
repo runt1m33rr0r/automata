@@ -4,11 +4,11 @@
 
 #include "DeterminateFiniteAutomaton.h"
 
-class DeterminateFiniteAutomatonInt : public DeterminateFiniteAutomaton<int>
+class DeterminateFiniteAutomatonChar : public DeterminateFiniteAutomaton<char>
 {
 public:
-	DeterminateFiniteAutomatonInt(
-		const SmartArray<int> & alphabet,
+	DeterminateFiniteAutomatonChar(
+		const SmartArray<char> & alphabet,
 		const SmartArray<State> & states,
 		const TransitionTable & table);
 

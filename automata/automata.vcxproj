@@ -118,6 +118,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DeterminateFiniteAutomatonChar.cpp" />
     <ClCompile Include="DeterminateFiniteAutomatonInt.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="State.cpp" />
@@ -125,6 +126,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DeterminateFiniteAutomaton.h" />
+    <ClInclude Include="DeterminateFiniteAutomatonChar.h" />
     <ClInclude Include="DeterminateFiniteAutomatonInt.h" />
     <ClInclude Include="SmartArray.h" />
     <ClInclude Include="State.h" />

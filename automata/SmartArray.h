@@ -1,7 +1,8 @@
 #ifndef SMART_ARRAY
 #define SMART_ARRAY
 
-template <class T> class SmartArray
+template <typename T> 
+class SmartArray
 {
 private:
 	T * elements;
