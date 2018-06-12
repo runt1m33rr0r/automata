@@ -1,8 +1,7 @@
 #include <iostream>
 #include <exception>
 
-#include "DeterminateFiniteAutomatonInt.h"
-#include "DeterminateFiniteAutomatonChar.h"
+#include "DeterminateFiniteAutomaton.h"
 
 using namespace std;
 
@@ -24,9 +23,9 @@ int main()
 	firstTransitions[1].add(State("q0", true));
 	firstTransitions[1].add(State("q1", false, true));
 
-	DeterminateFiniteAutomatonChar first(alphabet, firstStates, firstTransitions);
+	DeterminateFiniteAutomaton<char> first(alphabet, firstStates, firstTransitions);
 
-	/*SmartArray<State> secondStates;
+	SmartArray<State> secondStates;
 	secondStates.add(State("q0", true));
 	secondStates.add(State("q1"));
 	secondStates.add(State("q2"));
@@ -46,9 +45,11 @@ int main()
 	secondTransitions[3].add(State("q1"));
 	secondTransitions[3].add(State("q2"));
 
-	DeterminateFiniteAutomatonInt second(alphabet, secondStates, secondTransitions);
-	cout << second;*/
+	DeterminateFiniteAutomaton<char> second(alphabet, secondStates, secondTransitions);
+	cout << second << endl << endl;
 
+	DeterminateFiniteAutomaton<char> test = first & second;
+	cout << test << endl << endl;
 
 	ofstream out("test.txt");
 	out << first;
@@ -60,7 +61,7 @@ int main()
 	in >> first;
 	in.close();
 
-	cout << first << endl;
+	cout << first << endl << endl;
 
 	return 0;
 }

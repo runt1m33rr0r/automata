@@ -24,12 +24,6 @@
     <ClCompile Include="State.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DeterminateFiniteAutomatonInt.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DeterminateFiniteAutomatonChar.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="String.h">
@@ -41,13 +35,7 @@
     <ClInclude Include="SmartArray.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DeterminateFiniteAutomatonInt.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="DeterminateFiniteAutomaton.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DeterminateFiniteAutomatonChar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

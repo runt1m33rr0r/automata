@@ -257,23 +257,41 @@ public:
 
 	virtual std::ostream & insertDataInStream(std::ostream & out) const
 	{
-		out << "  ";
-		for (size_t i = 0; i < this->alphabet.getCount(); i++)
+		// print states
+		out << this->states.getCount() << " ";
+		for (size_t stateIdx = 0; stateIdx < this->states.getCount(); stateIdx++)
 		{
-			out << "  " << this->alphabet[i];
+			out << this->states[stateIdx].getName() << " ";
 		}
 		out << std::endl;
 
-		for (size_t i = 0; i < this->states.getCount(); i++)
+		// print alphabet
+		out << this->alphabet.getCount() << " ";
+		for (size_t symbolIdx = 0; symbolIdx < this->alphabet.getCount(); symbolIdx++)
 		{
-			out << states[i].getName() << " ";
-			for (size_t j = 0; j < this->alphabet.getCount(); j++)
+			out << this->alphabet[symbolIdx] << " ";
+		}
+		out << std::endl;
+
+		// print transition table
+		for (size_t row = 0; row < this->transitionTable.getCount(); row++)
+		{
+			for (size_t col = 0; col < this->transitionTable[0].getCount(); col++)
 			{
-				out << (transitionTable[i][j].getStarting() ? "s" : "");
-				out << (transitionTable[i][j].getFinal() ? "f" : "");
-				out << transitionTable[i][j].getName() << " ";
+				out << this->transitionTable[row][col].getName() << " ";
 			}
 			out << std::endl;
+		}
+
+		// print starting state
+		out << this->getStartingState().getName() << std::endl;
+
+		// print final states
+		SmartArray<State> finalStates = this->getFinalStates();
+		out << finalStates.getCount() << " ";
+		for (size_t stateIdx = 0; stateIdx < finalStates.getCount(); stateIdx++)
+		{
+			out << finalStates[stateIdx].getName() << " ";
 		}
 
 		return out;
@@ -325,48 +343,6 @@ public:
 		return in;
 	}
 
-	virtual std::ofstream & insertDataInFile(std::ofstream & out) const
-	{
-		// print states
-		out << this->states.getCount() << " ";
-		for (size_t stateIdx = 0; stateIdx < this->states.getCount(); stateIdx++)
-		{
-			out << this->states[stateIdx].getName() << " ";
-		}
-		out << std::endl;
-
-		// print alphabet
-		out << this->alphabet.getCount() << " ";
-		for (size_t symbolIdx = 0; symbolIdx < this->alphabet.getCount(); symbolIdx++)
-		{
-			out << this->alphabet[symbolIdx] << " ";
-		}
-		out << std::endl;
-
-		// print transition table
-		for (size_t row = 0; row < this->transitionTable.getCount(); row++)
-		{
-			for (size_t col = 0; col < this->transitionTable[0].getCount(); col++)
-			{
-				out << this->transitionTable[row][col].getName() << " ";
-			}
-			out << std::endl;
-		}
-
-		// print starting state
-		out << this->getStartingState().getName() << std::endl;
-
-		// print final states
-		SmartArray<State> finalStates = this->getFinalStates();
-		out << finalStates.getCount() << " ";
-		for (size_t stateIdx = 0; stateIdx < finalStates.getCount(); stateIdx++)
-		{
-			out << finalStates[stateIdx].getName() << " ";
-		}
-
-		return out;
-	}
-
 	virtual std::ifstream & extractDataFromFile(std::ifstream & in)
 	{
 		// read states
@@ -397,19 +373,15 @@ public:
 		}
 
 		// read transition table
-		for (size_t row = 0; row < symbolsCount; row++)
+		for (size_t row = 0; row < statesCount; row++)
 		{
-			SmartArray<State> currentRow;
-			for (size_t col = 0; col < statesCount; col++)
+			in >> currentStateName;
+			State newState(currentStateName);
+
+			if (transitionTable[row].indexOf(newState) < 0)
 			{
-				in >> currentStateName;
-				State newState(currentStateName);
-				if (transitionTable[row].indexOf(newState) < 0)
-				{
-					currentRow.add(newState);
-				}
+				transitionTable[row].add(newState);
 			}
-			this->transitionTable.add(currentRow);
 		}
 
 		// read starting state
@@ -449,6 +421,14 @@ public:
 template <typename T>
 std::ostream & operator<<(std::ostream & out, const DeterminateFiniteAutomaton<T> & obj)
 {
+	if (typeid(obj) == typeid(DeterminateFiniteAutomaton<int>))
+	{
+		out << "1" << std::endl;
+	}
+	else if (typeid(obj) == typeid(DeterminateFiniteAutomaton<char>))
+	{
+		out << "2" << std::endl;
+	}
 	return obj.insertDataInStream(out);
 }
 
@@ -456,12 +436,6 @@ template <typename T>
 std::istream & operator>>(std::istream & in, DeterminateFiniteAutomaton<T> & obj)
 {
 	return obj.extractDataFromStream(in);
-}
-
-template <typename T>
-std::ofstream & operator<<(std::ofstream & out, const DeterminateFiniteAutomaton<T> & obj)
-{
-	return obj.insertDataInFile(out);
 }
 
 template <typename T>
