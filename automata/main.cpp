@@ -24,9 +24,8 @@ int main()
 	firstTransitions[1].add(State("q1", false, true));
 
 	DeterminateFiniteAutomatonInt first(alphabet, firstStates, firstTransitions);
-	cout << first;
 
-	SmartArray<State> secondStates;
+	/*SmartArray<State> secondStates;
 	secondStates.add(State("q0", true));
 	secondStates.add(State("q1"));
 	secondStates.add(State("q2"));
@@ -47,10 +46,18 @@ int main()
 	secondTransitions[3].add(State("q2"));
 
 	DeterminateFiniteAutomatonInt second(alphabet, secondStates, secondTransitions);
-	cout << second;
+	cout << second;*/
+
 
 	ofstream out("test.txt");
 	out << first;
+	out.close();
+
+	ifstream in("test.txt");
+	in >> first;
+	in.close();
+
+	cout << first << endl;
 
 	return 0;
 }

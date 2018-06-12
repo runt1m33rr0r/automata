@@ -353,6 +353,82 @@ std::ofstream & DeterminateFiniteAutomatonInt::insertDataInFile(std::ofstream & 
 
 std::ifstream & DeterminateFiniteAutomatonInt::extractDataFromFile(std::ifstream & in)
 {
+	unsigned mess;
+	in >> mess;
+
+	// read states
+	unsigned statesCount = 0;
+	String currentStateName;
+	in >> statesCount;
+	for (size_t i = 0; i < statesCount; i++)
+	{
+		in >> currentStateName;
+		State newState(currentStateName);
+		if (this->states.indexOf(newState) < 0)
+		{
+			this->states.add(State(currentStateName));
+		}
+	}
+
+	// read alphabet
+	unsigned symbolsCount = 0;
+	char currentSymbol = ' ';
+	in >> symbolsCount;
+	for (size_t i = 0; i < symbolsCount; i++)
+	{
+		in >> currentSymbol;
+		if (this->alphabet.indexOf(currentSymbol) < 0)
+		{
+			this->alphabet.add(currentSymbol);
+		}
+	}
+
+	// read transition table
+	for (size_t row = 0; row < symbolsCount; row++)
+	{
+		SmartArray<State> currentRow;
+		for (size_t col = 0; col < statesCount; col++)
+		{
+			in >> currentStateName;
+			State newState(currentStateName);
+			if (transitionTable[row].indexOf(newState) < 0)
+			{
+				currentRow.add(newState);
+			}
+		}
+		this->transitionTable.add(currentRow);
+	}
+
+	// read starting state
+	in >> currentStateName;
+	this->getStateByName(currentStateName).setStarting(true);
+	for (size_t i = 0; i < this->transitionTable.getCount(); i++)
+	{
+		int index = this->transitionTable[i].indexOf(this->getStateByName(currentStateName));
+		if (index > -1)
+		{
+			this->transitionTable[i][index].setStarting(true);
+		}
+	}
+
+	// read final states
+	unsigned finalStatesCount = 0;
+	in >> finalStatesCount;
+	for (size_t i = 0; i < finalStatesCount; i++)
+	{
+		in >> currentStateName;
+		this->getStateByName(currentStateName).setFinal(true);
+
+		for (size_t j = 0; j < this->transitionTable.getCount(); j++)
+		{
+			int index = this->transitionTable[j].indexOf(this->getStateByName(currentStateName));
+			if (index > -1)
+			{
+				this->transitionTable[j][index].setFinal(true);
+			}
+		}
+	}
+
 	return in;
 }
 

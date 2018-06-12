@@ -44,6 +44,7 @@ void SmartArray<T>::deleteElements()
 	if (this->elements != nullptr)
 	{
 		delete[] this->elements;
+		this->elements = nullptr;
 	}
 	this->count = 0;
 }
