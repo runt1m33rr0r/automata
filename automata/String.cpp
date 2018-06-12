@@ -59,12 +59,13 @@ String & String::operator=(const String & other)
 
 bool String::operator==(const String & other) const
 {
-	if (this == &other || this->value == other.value)
+	if (this == &other)
 	{
 		return true;
 	}
 
-	return false;
+	bool areEqual = strcmp(this->value, other.value) == 0 ? true : false;
+	return areEqual;
 }
 
 String String::operator+(const String & other) const

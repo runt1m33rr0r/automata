@@ -15,7 +15,7 @@ private:
 	TransitionTable transitionTable;
 
 	State & getStateByName(const String & name);
-	size_t findDanglingStateIdx() const;
+	const State * findDanglingState() const;
 
 	static SmartArray<State> mergeRows(
 		const SmartArray<State> & firstRow,
