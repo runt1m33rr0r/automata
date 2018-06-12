@@ -28,7 +28,10 @@ private:
 		MergeMode mode);
 public:
 	DeterminateFiniteAutomatonInt();
-	DeterminateFiniteAutomatonInt(const SmartArray<char> & alphabet);
+	DeterminateFiniteAutomatonInt(
+		const SmartArray<char> & alphabet,
+		const SmartArray<State>& states,
+		TransitionTable & transitionTable);
 
 	const State & getStartingState() const;
 
@@ -41,4 +44,10 @@ public:
 	DeterminateFiniteAutomatonInt operator|(const DeterminateFiniteAutomatonInt & other) const;
 	DeterminateFiniteAutomatonInt operator&(const DeterminateFiniteAutomatonInt & other) const;
 	DeterminateFiniteAutomatonInt operator^(const DeterminateFiniteAutomatonInt & other) const;
+
+	std::ostream & insertDataIn(std::ostream & out) const;
+	std::istream & extractDataFrom(std::istream & in);
 };
+
+std::ostream & operator<<(std::ostream & out, const DeterminateFiniteAutomatonInt & obj);
+std::istream & operator>>(std::istream & in, DeterminateFiniteAutomatonInt & obj);

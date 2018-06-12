@@ -4,8 +4,9 @@ DeterminateFiniteAutomatonInt::DeterminateFiniteAutomatonInt()
 {
 }
 
-DeterminateFiniteAutomatonInt::DeterminateFiniteAutomatonInt(const SmartArray<char>& alphabet)
-	: alphabet(alphabet)
+DeterminateFiniteAutomatonInt::DeterminateFiniteAutomatonInt(
+	const SmartArray<char>& alphabet, const SmartArray<State>& states, TransitionTable & transitionTable)
+	: alphabet(alphabet), states(states), transitionTable(transitionTable)
 {
 }
 
@@ -83,11 +84,12 @@ DeterminateFiniteAutomatonInt DeterminateFiniteAutomatonInt::mergeAutomata(
 	const DeterminateFiniteAutomatonInt & second,
 	MergeMode mode)
 {
-	DeterminateFiniteAutomatonInt newAutomaton(first.alphabet);
+	DeterminateFiniteAutomatonInt newAutomaton;
+	newAutomaton.alphabet = first.alphabet;
+
 	State mergedState = DeterminateFiniteAutomatonInt::mergeStates(
 		first.getStartingState(),
 		second.getStartingState(), mode);
-
 	SmartArray<State> mergedFirstRow = DeterminateFiniteAutomatonInt::mergeRows(
 		first.transitionTable[0],
 		second.transitionTable[0],
@@ -108,12 +110,12 @@ DeterminateFiniteAutomatonInt DeterminateFiniteAutomatonInt::mergeAutomata(
 		danglingStateIdx = newAutomaton.findDanglingStateIdx();
 		danglingState = newAutomaton.states[danglingStateIdx];
 
-		firstRowIdx = first.states.indexOf(danglingState.getCompositeStates()[0]);
-		secondRowIdx = second.states.indexOf(danglingState.getCompositeStates()[1]);
+		firstRowIdx = first.states.indexOf(danglingState.getInnerStates()[0]);
+		secondRowIdx = second.states.indexOf(danglingState.getInnerStates()[1]);
 		firstRow = first.transitionTable[firstRowIdx];
 		secondRow = second.transitionTable[secondRowIdx];
-
 		mergedRow = DeterminateFiniteAutomatonInt::mergeRows(firstRow, secondRow, mode);
+
 		newAutomaton.transitionTable.add(mergedRow);
 	} while (danglingStateIdx >= 0);
 
@@ -168,12 +170,7 @@ bool DeterminateFiniteAutomatonInt::doesRecognizeWord(const String & word) const
 		currentState = this->transitionTable[letterInAlphabetIdx][currentStateIdx];
 	}
 
-	if (currentState.getFinal())
-	{
-		return true;
-	}
-
-	return false;
+	return currentState.getFinal();
 }
 
 DeterminateFiniteAutomatonInt DeterminateFiniteAutomatonInt::operator|(
@@ -220,4 +217,82 @@ DeterminateFiniteAutomatonInt DeterminateFiniteAutomatonInt::operator^(
 	}
 
 	return newAutomaton;
+}
+
+std::ostream & DeterminateFiniteAutomatonInt::insertDataIn(std::ostream & out) const
+{
+	out << "  ";
+	for (size_t i = 0; i < this->alphabet.getCount(); i++)
+	{
+		out << "  " << this->alphabet[i];
+	}
+	out << std::endl;
+
+	for (size_t i = 0; i < this->states.getCount(); i++)
+	{
+		out << states[i].getName() << " ";
+		for (size_t j = 0; j < this->alphabet.getCount(); j++)
+		{
+			out << transitionTable[i][j].getName() << " ";
+		}
+		out << std::endl;
+	}
+
+	return out;
+}
+
+std::istream & DeterminateFiniteAutomatonInt::extractDataFrom(std::istream & in)
+{
+	unsigned statesCount = 0;
+	std::cout << "number of states: ";
+	std::cin >> statesCount;
+
+	for (size_t i = 0; i < statesCount; i++)
+	{
+		String stateName;
+		std::cout << "state" << i << " name: ";
+		std::cin >> stateName;
+
+		this->states.add(State(stateName));
+	}
+
+	unsigned symbolsCount = 0;
+	std::cout << "number of symbols: ";
+	std::cin >> symbolsCount;
+
+	for (size_t i = 0; i < symbolsCount; i++)
+	{
+		char symbol;
+		std::cout << "symbol" << i << " name: ";
+		std::cin >> symbol;
+
+		this->alphabet.add(symbol);
+	}
+
+	for (size_t stateIdx = 0; stateIdx < statesCount; stateIdx++)
+	{
+		SmartArray<State> rowStates;
+		for (size_t symbolIdx = 0; symbolIdx < symbolsCount; symbolIdx++)
+		{
+			std::cout << "transition (" << states[stateIdx].getName() << ", " 
+				<< this->alphabet[symbolIdx] << ")->";
+			String toName;
+			std::cin >> toName;
+			rowStates.add(State(toName));
+		}
+
+		this->transitionTable.add(rowStates);
+	}
+
+	return in;
+}
+
+std::ostream & operator<<(std::ostream & out, const DeterminateFiniteAutomatonInt & obj)
+{
+	return obj.insertDataIn(out);
+}
+
+std::istream & operator>>(std::istream & in, DeterminateFiniteAutomatonInt & obj)
+{
+	return obj.extractDataFrom(in);
 }

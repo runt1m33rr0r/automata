@@ -5,8 +5,8 @@ State::State() : name("none"), isFinal(false), isStarting(false)
 {
 }
 
-State::State(const String & name, bool isStarting, bool isFinal, const SmartArray<State> & compositeStates) :
-	name(name), isFinal(isFinal), isStarting(isStarting), compositeStates(compositeStates)
+State::State(const String & name, bool isStarting, bool isFinal, const SmartArray<State> & innerStates) :
+	name(name), isFinal(isFinal), isStarting(isStarting), innerStates(innerStates)
 {
 }
 
@@ -25,9 +25,9 @@ bool State::getStarting() const
 	return this->isStarting;
 }
 
-SmartArray<State> State::getCompositeStates() const
+SmartArray<State> State::getInnerStates() const
 {
-	return this->compositeStates;
+	return this->innerStates;
 }
 
 void State::setStarting(bool isStarting)
