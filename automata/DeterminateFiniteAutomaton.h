@@ -30,7 +30,7 @@ private:
 			}
 		}
 
-		throw AutomatonStateException(name);
+		throw AutomatonStateException(name, __LINE__);
 	}
 
 	const State * findDanglingState() const
@@ -113,8 +113,8 @@ private:
 		newAutomaton.alphabet = first.alphabet;
 
 		State mergedState = DeterminateFiniteAutomaton<T>::mergeStates(
-			first.getStartingState(),
-			second.getStartingState(), mode);
+			*first.getStartingState(),
+			*second.getStartingState(), mode);
 		SmartArray<State> mergedFirstRow = DeterminateFiniteAutomaton<T>::mergeRows(
 			first.transitionTable[0],
 			second.transitionTable[0],
@@ -163,24 +163,25 @@ public:
 	{
 	}
 
-	const State & getStartingState() const
+	const State * getStartingState() const
 	{
 		for (size_t i = 0; i < this->states.getCount(); i++)
 		{
 			if (this->states[i].getStarting())
 			{
-				return this->states[i];
+				return &this->states[i];
 			}
 		}
 
-		throw AutomatonStateException("q0");
+		return nullptr;
 	}
 
 	void setStartingState(String name)
 	{
-		if (this->getStartingState().getStarting())
+		const State * starting = this->getStartingState();
+		if (starting)
 		{
-			throw AutomatonException(name, this->getStartingState().getName());
+			throw AutomatonException(name, starting->getName(), __LINE__);
 		}
 
 		this->getStateByName(name).setStarting(true);
@@ -188,8 +189,7 @@ public:
 
 	void unsetStartingState()
 	{
-		String startingName = this->getStartingState().getName();
-		this->getStateByName(startingName).setStarting(false);
+		this->getStartingState().setStarting(false);
 	}
 
 	void setFinalState(String name)
@@ -286,7 +286,10 @@ public:
 		}
 
 		// print starting state
-		out << this->getStartingState().getName() << std::endl;
+		if (this->getStartingState() != nullptr)
+		{
+			out << this->getStartingState()->getName() << std::endl;
+		}
 
 		// print final states
 		SmartArray<State> finalStates = this->getFinalStates();
@@ -308,9 +311,8 @@ public:
 		for (size_t i = 0; i < statesCount; i++)
 		{
 			String stateName;
-			std::cout << "state" << i << " name: ";
+			std::cout << "state [" << i << "]: ";
 			std::cin >> stateName;
-
 			this->states.add(State(stateName));
 		}
 
@@ -321,7 +323,7 @@ public:
 		for (size_t i = 0; i < symbolsCount; i++)
 		{
 			T symbol;
-			std::cout << "symbol" << i << " name: ";
+			std::cout << "symbol [" << i << "]: ";
 			std::cin >> symbol;
 
 			this->alphabet.add(symbol);
@@ -348,9 +350,11 @@ public:
 		this->setStartingState(startingName);
 
 		unsigned finalStatesCount = 0;
+		cout << "final states count: ";
+		cin >> finalStatesCount;
 		for (size_t i = 1; i <= finalStatesCount; i++)
 		{
-			std::cout << "final state " << i << ": ";
+			std::cout << "final state [" << i << "]: ";
 			String finalName;
 			cin >> finalName;
 			this->getStateByName(finalName).setFinal(true);

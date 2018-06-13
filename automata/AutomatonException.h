@@ -12,8 +12,9 @@ private:
 	String oldStateName;
 	String tryStateName;
 	char * msg;
+	unsigned line;
 public:
-	AutomatonException(const String & tryStateName, const String & oldStateName);
+	AutomatonException(const String & tryStateName, const String & oldStateName, unsigned line);
 	~AutomatonException();
 
 	const char * what() const;

@@ -1,10 +1,10 @@
 #include "AutomatonStateException.h"
 
-AutomatonStateException::AutomatonStateException(const String & missingState)
-	: missingState(missingState), msg(nullptr)
+AutomatonStateException::AutomatonStateException(const String & missingState, unsigned line)
+	: missingState(missingState), msg(nullptr), line(line)
 {
 	std::ostringstream convert;
-	convert << "Error on line " << __LINE__ << ": " << "the state "
+	convert << "Error on line " << this->line << ": " << "the state "
 		<< this->missingState << " does not belong to this automaton!";
 
 	this->msg = new char[strlen(convert.str().c_str()) + 1];

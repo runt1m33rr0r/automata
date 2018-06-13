@@ -1,10 +1,13 @@
 #include "AutomatonException.h"
 
-AutomatonException::AutomatonException(const String & tryStateName, const String & oldStateName) : 
-	tryStateName(tryStateName), oldStateName(oldStateName)
+AutomatonException::AutomatonException(
+	const String & tryStateName, 
+	const String & oldStateName, 
+	unsigned line) : 
+	tryStateName(tryStateName), oldStateName(oldStateName), line(line)
 {
 	std::ostringstream convert;
-	convert << "Error on line " << __LINE__ << ": " << "automaton already has starting state "
+	convert << "Error on line " << this->line << ": " << "automaton already has starting state "
 		<< this->oldStateName << " and you can not set " << tryStateName << " as starting!";
 
 	this->msg = new char[strlen(convert.str().c_str()) + 1];

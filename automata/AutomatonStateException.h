@@ -12,8 +12,9 @@ class AutomatonStateException : public std::exception
 private:
 	String missingState;
 	char * msg;
+	unsigned line;
 public:
-	AutomatonStateException(const String & missingState);
+	AutomatonStateException(const String & missingState, unsigned line);
 	~AutomatonStateException();
 
 	const char * what() const;
