@@ -33,6 +33,20 @@ private:
 		throw AutomatonStateException(name, __LINE__);
 	}
 
+	State & getStateFromTable(const String & name)
+	{
+		for (size_t row = 0; row < this->transitionTable.getCount(); row++)
+		{
+			int index = transitionTable[row].indexOf(this->getStateByName(name));
+			if (index > -1)
+			{
+				return transitionTable[row][index];
+			}
+		}
+
+		throw AutomatonStateException(name, __LINE__);
+	}
+
 	const State * findDanglingState() const
 	{
 		for (size_t row = 0; row < this->transitionTable.getCount(); row++)
@@ -106,7 +120,7 @@ private:
 
 	static DeterminateFiniteAutomaton<T> mergeAutomata(
 		const DeterminateFiniteAutomaton<T> & first,
-		const DeterminateFiniteAutomaton <T>& second,
+		const DeterminateFiniteAutomaton<T> & second,
 		MergeMode mode)
 	{
 		DeterminateFiniteAutomaton<T> newAutomaton;
@@ -185,21 +199,25 @@ public:
 		}
 
 		this->getStateByName(name).setStarting(true);
+		this->getStateFromTable(name).setStarting(true);
 	}
 
 	void unsetStartingState()
 	{
-		this->getStartingState().setStarting(false);
+		String startingName = this->getStartingState()->getName();
+		this->getStateByName(startingName).setStarting(false);
+		this->getStateFromTable(startingName).setStarting(false);
 	}
 
 	void setFinalState(String name)
 	{
 		this->getStateByName(name).setFinal(true);
+		this->getStateFromTable(name).setFinal(true);
 	}
 
 	bool doesRecognizeWord(const String & word) const
 	{
-		State currentState = this->getStartingState();
+		State currentState = *this->getStartingState();
 		size_t currentStateIdx = 0;
 
 		for (size_t letterIdx = 0; letterIdx < word.getLen(); letterIdx++)
@@ -208,7 +226,7 @@ public:
 			size_t letterInAlphabetIdx = this->alphabet.indexOf(currentLetter);
 			currentStateIdx = this->states.indexOf(currentState);
 
-			currentState = this->transitionTable[letterInAlphabetIdx][currentStateIdx];
+			currentState = this->transitionTable[currentStateIdx][letterInAlphabetIdx];
 		}
 
 		return currentState.getFinal();
@@ -352,12 +370,12 @@ public:
 		unsigned finalStatesCount = 0;
 		cout << "final states count: ";
 		cin >> finalStatesCount;
-		for (size_t i = 1; i <= finalStatesCount; i++)
+		for (size_t i = 0; i < finalStatesCount; i++)
 		{
 			std::cout << "final state [" << i << "]: ";
 			String finalName;
 			cin >> finalName;
-			this->getStateByName(finalName).setFinal(true);
+			this->setFinalState(finalName);
 		}
 
 		return in;
@@ -406,14 +424,10 @@ public:
 
 		// read starting state
 		in >> currentStateName;
-		this->getStateByName(currentStateName).setStarting(true);
-		for (size_t i = 0; i < this->transitionTable.getCount(); i++)
+		if (!this->getStartingState()->getStarting())
 		{
-			int index = this->transitionTable[i].indexOf(this->getStateByName(currentStateName));
-			if (index > -1)
-			{
-				this->transitionTable[i][index].setStarting(true);
-			}
+			this->unsetStartingState();
+			this->setStartingState(currentStateName);
 		}
 
 		// read final states
@@ -422,16 +436,7 @@ public:
 		for (size_t i = 0; i < finalStatesCount; i++)
 		{
 			in >> currentStateName;
-			this->getStateByName(currentStateName).setFinal(true);
-
-			for (size_t j = 0; j < this->transitionTable.getCount(); j++)
-			{
-				int index = this->transitionTable[j].indexOf(this->getStateByName(currentStateName));
-				if (index > -1)
-				{
-					this->transitionTable[j][index].setFinal(true);
-				}
-			}
+			this->setFinalState(currentStateName);
 		}
 
 		return in;
