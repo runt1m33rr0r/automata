@@ -6,6 +6,7 @@
 #include "SmartArray.h"
 #include "State.h"
 #include "AutomatonException.h"
+#include "AutomatonStateException.h"
 
 enum MergeMode { Union, Intersection };
 
@@ -29,7 +30,7 @@ private:
 			}
 		}
 
-		throw std::exception("State does not exist!");
+		throw AutomatonStateException(name);
 	}
 
 	const State * findDanglingState() const
@@ -172,7 +173,7 @@ public:
 			}
 		}
 
-		throw std::exception("State does not exist!");
+		throw AutomatonStateException("q0");
 	}
 
 	void setStartingState(String name)
@@ -341,6 +342,20 @@ public:
 			this->transitionTable.add(rowStates);
 		}
 
+		String startingName;
+		std::cout << "starting state: ";
+		std::cin >> startingName;
+		this->setStartingState(startingName);
+
+		unsigned finalStatesCount = 0;
+		for (size_t i = 1; i <= finalStatesCount; i++)
+		{
+			std::cout << "final state " << i << ": ";
+			String finalName;
+			cin >> finalName;
+			this->getStateByName(finalName).setFinal(true);
+		}
+
 		return in;
 	}
 
@@ -387,7 +402,6 @@ public:
 
 		// read starting state
 		in >> currentStateName;
-		this->setStartingState(currentStateName);
 		this->getStateByName(currentStateName).setStarting(true);
 		for (size_t i = 0; i < this->transitionTable.getCount(); i++)
 		{

@@ -13,7 +13,11 @@ AutomatonException::AutomatonException(const String & tryStateName, const String
 
 AutomatonException::~AutomatonException()
 {
-	delete[] this->msg;
+	if (this->msg != nullptr)
+	{
+		delete[] this->msg;
+		this->msg = nullptr;
+	}
 }
 
 const char * AutomatonException::what() const
